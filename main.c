@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <fmtmsg.h>
 
 struct horario_peca{
     int hora;
@@ -39,6 +40,13 @@ int Sair() {
 
 struct tm* DATA;
 struct horario_peca HORARIO_PECA;
+float PRECO_BASE = 50.0;
+
+//int conferirIdadeCrianca(){}
+//
+//int conferirIdoso(){}
+//
+//int conferirProfessorEscolaPublica(){}
 
 int main() {
     DATA = PegarData();
@@ -54,10 +62,111 @@ struct tm* PegarData() {
     return localtime(&now);
 }
 
-void CompreIngresso() {
-    printf("Compre");
 
-    MenuPrincipal();
+int ConferirEstudante() {
+    int valido = 0;
+    char opcao;
+    do{
+        printf("É estudante?\nUse S ou N");
+        scanf("%s", &opcao);
+        switch(opcao) {
+            case 'S':
+            case 's':
+                return 1;
+                break;
+            case 'N':
+            case 'n':
+                return 0;
+                break;
+            default:
+                break;
+                    }
+
+    }while(valido!=1);
+}
+
+int ConferirProfessor() {
+    int valido = 0;
+    char opcao;
+    do{
+        printf("É professor rede publica?\nUse S ou N");
+        scanf("%s", &opcao);
+        switch(opcao) {
+            case 'S':
+            case 's':
+                return 1;
+                break;
+            case 'N':
+            case 'n':
+                return 0;
+                break;
+            default:
+                break;
+        }
+
+    }while(valido!=1);
+}
+
+int ConferirMenorDeIdade(int idade) {
+    if(idade >=2 && idade<=12) {
+        return 1;
+    }
+    return 0;
+}
+
+int ConferirIdoso(int idade){
+    if(idade >=60) {
+        return 1;
+    }
+    return 0;
+}
+
+int ConferirIdadeDiaDaSemana(int idade) {
+    int diaDaSemana = DATA->tm_wday;
+
+    int valido = 0;
+
+    char opcao;
+    do{
+        printf("É estudante carente?\nUse S ou N");
+        scanf("%s", &opcao);
+        switch(opcao) {
+            case 'S':
+            case 's':
+                return 1;
+            case 'N':
+            case 'n':
+                return 0;
+            default:
+                break;
+        }
+
+    }while(valido!=1);
+
+    if(diaDaSemana==2) {
+        return 1;
+    }
+    return 0;
+
+}
+
+void CompreIngresso() {
+    int idade=0;
+    int menor=0;
+    int idoso=0;
+    int professor=0;
+    int estudante=ConferirEstudante();
+    int criancaTercaFeira=0;
+
+
+    printf("Informe sua idade:");
+    scanf("%d", &idade);
+
+    menor = ConferirMenorDeIdade(idade);
+    idoso = ConferirIdoso(idade);
+    professor = ConferirProfessor();
+    criancaTercaFeira =  ConferirIdadeDiaDaSemana(idade);
+     // MenuPrincipal();
 }
 
 void MenuPrincipal() {
@@ -79,7 +188,6 @@ void MenuPrincipal() {
     printf("\n\t\t===============================================\n\n\n");
 
         printf("\n\t\t Selecione opção:");
-
 
         scanf("%d", &opcao);
         switch (opcao) {
