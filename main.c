@@ -21,7 +21,6 @@
 
 #include <stdio.h>
 #include <time.h>
-#include <fmtmsg.h>
 
 struct horario_peca{
     int hora;
@@ -41,12 +40,6 @@ int Sair() {
 struct tm* DATA;
 struct horario_peca HORARIO_PECA;
 float PRECO_BASE = 50.0;
-
-//int conferirIdadeCrianca(){}
-//
-//int conferirIdoso(){}
-//
-//int conferirProfessorEscolaPublica(){}
 
 int main() {
     DATA = PegarData();
@@ -73,16 +66,16 @@ int ConferirEstudante() {
             case 'S':
             case 's':
                 return 1;
-                break;
             case 'N':
             case 'n':
                 return 0;
-                break;
             default:
                 break;
-                    }
+        }
 
     }while(valido!=1);
+
+    return 0;
 }
 
 int ConferirProfessor() {
@@ -105,6 +98,8 @@ int ConferirProfessor() {
         }
 
     }while(valido!=1);
+
+    return 0;
 }
 
 int ConferirMenorDeIdade(int idade) {
@@ -124,8 +119,6 @@ int ConferirIdoso(int idade){
 int ConferirIdadeDiaDaSemana(int idade) {
     int diaDaSemana = DATA->tm_wday;
 
-    int valido = 0;
-
     char opcao;
     do{
         printf("É estudante carente?\nUse S ou N");
@@ -133,39 +126,30 @@ int ConferirIdadeDiaDaSemana(int idade) {
         switch(opcao) {
             case 'S':
             case 's':
-                return 1;
+                if(diaDaSemana==2) {
+                    return 1;
+                }
+                return 0;
             case 'N':
             case 'n':
                 return 0;
             default:
                 break;
         }
-
-    }while(valido!=1);
-
-    if(diaDaSemana==2) {
-        return 1;
-    }
-    return 0;
-
+    }while(1);
 }
 
 void CompreIngresso() {
     int idade=0;
-    int menor=0;
-    int idoso=0;
-    int professor=0;
-    int estudante=ConferirEstudante();
-    int criancaTercaFeira=0;
-
 
     printf("Informe sua idade:");
     scanf("%d", &idade);
 
-    menor = ConferirMenorDeIdade(idade);
-    idoso = ConferirIdoso(idade);
-    professor = ConferirProfessor();
-    criancaTercaFeira =  ConferirIdadeDiaDaSemana(idade);
+    int menor = ConferirMenorDeIdade(idade);
+    int idoso = ConferirIdoso(idade);
+    int estudante=ConferirEstudante();
+    int professor = ConferirProfessor();
+    int criancaTercaFeira =  ConferirIdadeDiaDaSemana(idade);
      // MenuPrincipal();
 }
 
