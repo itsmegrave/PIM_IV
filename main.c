@@ -42,7 +42,7 @@ void GerarTicket(int cadeiraSelecionada, float valor);
 struct tm* PegarData();
 
 int Sair() {
-    printf("Sistema finalizado");
+    printf("\t\t[Sistema finalizado]");
     return 0;
 }
 
@@ -78,7 +78,7 @@ void InicializarSala() {
 int ConferirEstudante() {
     char opcao;
     do{
-        printf("É estudante? (S/N) ");
+        printf("\t\tÉ estudante? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -97,7 +97,7 @@ int ConferirEstudante() {
 int ConferirProfessor() {
     char opcao;
     do{
-        printf("É professor da rede publica? (S/N) ");
+        printf("\t\tÉ professor da rede publica? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -132,7 +132,7 @@ int ConferirCriancaCarenteDiaDaSemana() {
 
     char opcao;
     do{
-        printf("É estudante rede pública? (S/N) ");
+        printf("\t\tÉ estudante rede pública? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -161,7 +161,7 @@ int VerificarSalaCheia() {
 
 void CompreIngresso() {
     if(VerificarSalaCheia()==1) {
-        printf("Sala Lotada!");
+        printf("\t\t[Sala Lotada!]");
 
         MenuPrincipal();
     }
@@ -174,7 +174,7 @@ void CompreIngresso() {
     int cadeiraSelecionada = 0;
     float valor;
 
-    printf("Informe sua idade:");
+    printf("\t\tInforme sua idade:");
     scanf("%d", &idade);
 
     ehMenor = ConferirMenorDeIdade(idade);
@@ -222,19 +222,19 @@ void GerarTicket(int cadeiraSelecionada, float valor) {
 int SelecionarPoltrona(){
     int selecao;
     do {
-        printf("\t\t===============================================\n");
-        printf("\t\t*              P O L T R O N A S              *\n");
-        printf("\t\t===============================================\n");
+        printf("\n\n");
+        printf("\t\t=================================================\n");
+        printf("\t\t*               P O L T R O N A S               *\n");
+        printf("\t\t=================================================\n");
 
-        printf("\n");
         for (int i=1;i<=50;i++){
-            if(i==11||i==21||i==31||i==41){
-                printf("\n");
+            if(i==1||i==11||i==21||i==31||i==41){
+                printf("\n\t\t");
             }
-            if (POLTRONAS[i]==-1){
+            if (POLTRONAS[i-1]==-1){
                 printf("[%2.d] ",i);
             }	else {
-                printf("[X] ");
+                printf("[--] ");
             }
         }
 
@@ -266,7 +266,7 @@ void MenuPrincipal() {
     printf("\n\t\t||                                           ||");
     printf("\n\t\t===============================================\n\n\n");
 
-        printf("\n\t\t Selecione opção:");
+        printf("\n\t\tSelecione opção:");
 
         scanf("%d", &opcao);
         switch (opcao) {
