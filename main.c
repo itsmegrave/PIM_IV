@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <locale.h>
+#include <stdlib.h>
 
 
 struct horario_peca{
@@ -193,6 +194,7 @@ void CompreIngresso() {
     GravarPoltrona(cadeiraSelecionada, valor);
     GerarTicket(cadeiraSelecionada, valor);
 
+    system("read -p '\t\tPressione ENTER para continuar...' var");
 
     MenuPrincipal();
 }
@@ -238,13 +240,13 @@ int SelecionarPoltrona(){
             }
         }
 
-        printf(" \n Selecione sua Poltrona :");
+        printf("\n\t\tSelecione sua Poltrona :");
         scanf("%d",&selecao);
         selecao = selecao;
         if(POLTRONAS[selecao-1]==-1){
             return selecao;
         }else {
-            printf("\n [O Lugar já foi reservado!] \n");
+            printf("\n\t\t[O Lugar já foi reservado!] \n");
         }
     }while(1);
 }
