@@ -208,9 +208,9 @@ void GravarPoltrona(int cadeiraSelecionada, float valor) {
 }
 
 void GerarTicket(int cadeiraSelecionada, float valor) {
-    printf("\t\t===============================================\n");
-    printf("\t\t*                 T I C K E T                 *\n");
-    printf("\t\t===============================================\n");
+    printf("\t\t====================================\n");
+    printf("\t\t*            T I C K E T            *\n");
+    printf("\t\t====================================\n");
 
 }
 
