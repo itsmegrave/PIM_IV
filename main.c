@@ -30,6 +30,13 @@ struct horario_peca{
 
 void CompreIngresso();
 void MenuPrincipal();
+void InicializarSala();
+int SelecionarPoltrona();
+int VerificarSalaCheia();
+float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor);
+void GravarPoltrona(int cadeiraSelecionada, float valor);
+void GerarTicket(int cadeiraSelecionada, float valor);
+
 struct tm* PegarData();
 
 int Sair() {
@@ -40,11 +47,13 @@ int Sair() {
 struct tm* DATA;
 struct horario_peca HORARIO_PECA;
 float PRECO_BASE = 50.0;
+float POLTRONAS[50];
 
 int main() {
     DATA = PegarData();
     HORARIO_PECA.hora=21;
     HORARIO_PECA.minuto=30;
+    InicializarSala();
     MenuPrincipal();
 }
 
@@ -55,12 +64,16 @@ struct tm* PegarData() {
     return localtime(&now);
 }
 
+void InicializarSala() {
+    for (int i = 0; i < sizeof(POLTRONAS)/sizeof(float); ++i) {
+        POLTRONAS[i]=-1;
+    }
+}
 
 int ConferirEstudante() {
-    int valido = 0;
     char opcao;
     do{
-        printf("É estudante?\nUse S ou N");
+        printf("É estudante? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -73,33 +86,26 @@ int ConferirEstudante() {
                 break;
         }
 
-    }while(valido!=1);
-
-    return 0;
+    }while(1);
 }
 
 int ConferirProfessor() {
-    int valido = 0;
     char opcao;
     do{
-        printf("É professor rede publica?\nUse S ou N");
+        printf("É professor da rede publica? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
             case 's':
                 return 1;
-                break;
             case 'N':
             case 'n':
                 return 0;
-                break;
             default:
                 break;
         }
 
-    }while(valido!=1);
-
-    return 0;
+    }while(1);
 }
 
 int ConferirMenorDeIdade(int idade) {
@@ -116,12 +122,12 @@ int ConferirIdoso(int idade){
     return 0;
 }
 
-int ConferirIdadeDiaDaSemana(int idade) {
+int ConferirEstudanteCarenteDiaDaSemana() {
     int diaDaSemana = DATA->tm_wday;
 
     char opcao;
     do{
-        printf("É estudante carente?\nUse S ou N");
+        printf("É estudante carente? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -139,29 +145,112 @@ int ConferirIdadeDiaDaSemana(int idade) {
     }while(1);
 }
 
+int VerificarSalaCheia() {
+    for (int i = 0; i < sizeof(POLTRONAS)/sizeof(float); ++i) {
+        if(POLTRONAS[i]==-1) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 void CompreIngresso() {
-    int idade=0;
+    if(VerificarSalaCheia()==1) {
+        printf("Sala Lotada!");
+
+        MenuPrincipal();
+    }
+    int idade = 0;
+    int ehMenor = 0;
+    int ehIdoso = 0;
+    int ehEstudante = 0;
+    int ehCriancaETercaFeira = 0;
+    int ehProfessor = 0;
+    int cadeiraSelecionada = 0;
+    float valor;
 
     printf("Informe sua idade:");
     scanf("%d", &idade);
 
-    int menor = ConferirMenorDeIdade(idade);
-    int idoso = ConferirIdoso(idade);
-    int estudante=ConferirEstudante();
-    int professor = ConferirProfessor();
-    int criancaTercaFeira =  ConferirIdadeDiaDaSemana(idade);
-     // MenuPrincipal();
+    ehMenor = ConferirMenorDeIdade(idade);
+    ehIdoso = ConferirIdoso(idade);
+    ehEstudante = ConferirEstudante();
+
+    if(ehEstudante==1) {
+        ehCriancaETercaFeira = ConferirEstudanteCarenteDiaDaSemana();
+    } else {
+        ehProfessor = ConferirProfessor();
+    }
+    cadeiraSelecionada = SelecionarPoltrona();
+
+    valor = CalcularValor(ehMenor, ehIdoso, ehEstudante, ehCriancaETercaFeira, ehProfessor);
+
+    GravarPoltrona(cadeiraSelecionada, valor);
+    GerarTicket(cadeiraSelecionada, valor);
+
+
+    MenuPrincipal();
+}
+
+float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor){
+    float valorIngresso = PRECO_BASE;
+    if(ehMenor==1 || ehIdoso==1 || ehEstudante==1 || ehProfessor==1) {
+        valorIngresso = valorIngresso / 2;
+    } else if(ehCriancaETercaFeira) {
+        valorIngresso = 0;
+    }
+
+    return valorIngresso;
+}
+
+void GravarPoltrona(int cadeiraSelecionada, float valor) {
+    POLTRONAS[cadeiraSelecionada-1] = valor;
+}
+
+void GerarTicket(int cadeiraSelecionada, float valor) {
+    printf("\t\t===============================================\n");
+    printf("\t\t*                 T I C K E T                 *\n");
+    printf("\t\t===============================================\n");
+
+}
+
+int SelecionarPoltrona(){
+    int selecao;
+    do {
+        printf("\t\t===============================================\n");
+        printf("\t\t*              P O L T R O N A S              *\n");
+        printf("\t\t===============================================\n");
+
+        printf("\n");
+        for (int i=1;i<=50;i++){
+            if(i==11||i==21||i==31||i==41){
+                printf("\n");
+            }
+            if (POLTRONAS[i]==-1){
+                printf("[X] ");
+            }	else {printf("[%2.d] ",i);
+            }
+        }
+
+        printf(" \n Selecione sua Poltrona :");
+        scanf("%d",&selecao);
+        selecao = selecao;
+        if(POLTRONAS[selecao-1]!=-1){
+            return selecao;
+        }else {
+            printf("\n [O Lugar já foi reservado!] \n");
+        }
+    }while(1);
 }
 
 void MenuPrincipal() {
-    int sair = 0;
     int opcao = 0;
 
     printf("\n\n\n\n");
     printf("\t\t===============================================\n");
     printf("\t\t*      I N G R E S S O * T E A T R O          *\n");
     printf("\t\t===============================================");
-    printf("\n\t\t||         Data da peça: %d/%d/%d %d:%d     ||         ", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year+1900), HORARIO_PECA.hora, HORARIO_PECA.minuto);
+    printf("\n\t\t||         Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year+1900), HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\n\t\t||            M A I N  *  M E N U            ||");
     printf("\n\t\t===============================================");
     printf("\n\t\t||                                           ||");
