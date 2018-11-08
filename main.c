@@ -21,6 +21,8 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <locale.h>
+
 
 struct horario_peca{
     int hora;
@@ -50,9 +52,12 @@ float PRECO_BASE = 50.0;
 float POLTRONAS[50];
 
 int main() {
+    setlocale(LC_ALL,"Portuguese");
+
     DATA = PegarData();
     HORARIO_PECA.hora=21;
     HORARIO_PECA.minuto=30;
+
     InicializarSala();
     MenuPrincipal();
 }
@@ -122,12 +127,12 @@ int ConferirIdoso(int idade){
     return 0;
 }
 
-int ConferirEstudanteCarenteDiaDaSemana() {
+int ConferirCriancaCarenteDiaDaSemana() {
     int diaDaSemana = DATA->tm_wday;
 
     char opcao;
     do{
-        printf("É estudante carente? (S/N) ");
+        printf("É estudante rede pública? (S/N) ");
         scanf("%s", &opcao);
         switch(opcao) {
             case 'S':
@@ -164,7 +169,7 @@ void CompreIngresso() {
     int ehMenor = 0;
     int ehIdoso = 0;
     int ehEstudante = 0;
-    int ehCriancaETercaFeira = 0;
+    int ehEstudanteCriancaETercaFeira = 0;
     int ehProfessor = 0;
     int cadeiraSelecionada = 0;
     float valor;
@@ -177,13 +182,13 @@ void CompreIngresso() {
     ehEstudante = ConferirEstudante();
 
     if(ehEstudante==1) {
-        ehCriancaETercaFeira = ConferirEstudanteCarenteDiaDaSemana();
+        ehEstudanteCriancaETercaFeira = ConferirCriancaCarenteDiaDaSemana();
     } else {
         ehProfessor = ConferirProfessor();
     }
     cadeiraSelecionada = SelecionarPoltrona();
 
-    valor = CalcularValor(ehMenor, ehIdoso, ehEstudante, ehCriancaETercaFeira, ehProfessor);
+    valor = CalcularValor(ehMenor, ehIdoso, ehEstudante, ehEstudanteCriancaETercaFeira, ehProfessor);
 
     GravarPoltrona(cadeiraSelecionada, valor);
     GerarTicket(cadeiraSelecionada, valor);
@@ -209,7 +214,7 @@ void GravarPoltrona(int cadeiraSelecionada, float valor) {
 
 void GerarTicket(int cadeiraSelecionada, float valor) {
     printf("\t\t====================================\n");
-    printf("\t\t*            T I C K E T            *\n");
+    printf("\t\t*            T I C K E T           *\n");
     printf("\t\t====================================\n");
 
 }
