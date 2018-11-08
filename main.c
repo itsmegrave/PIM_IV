@@ -23,65 +23,72 @@
 #include <time.h>
 #include <locale.h>
 #include <stdlib.h>
+#include "clearscr.h"
 
-
-struct horario_peca{
+struct horario_peca {
     int hora;
     int minuto;
 };
 
 
 void CompreIngresso();
+
 void MenuPrincipal();
+
 void InicializarSala();
+
 int SelecionarPoltrona();
+
 int VerificarSalaCheia();
+
 float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor);
+
 void GravarPoltrona(int cadeiraSelecionada, float valor);
+
 void GerarTicket(int cadeiraSelecionada, float valor);
 
-struct tm* PegarData();
+struct tm *PegarData();
 
 int Sair() {
     printf("\t\t[Sistema finalizado]");
     return 0;
 }
 
-struct tm* DATA;
+struct tm *DATA;
 struct horario_peca HORARIO_PECA;
 float PRECO_BASE = 50.0;
 float POLTRONAS[50];
 
 int main() {
-    setlocale(LC_ALL,"Portuguese");
+    setlocale(LC_ALL, "Portuguese");
 
     DATA = PegarData();
-    HORARIO_PECA.hora=21;
-    HORARIO_PECA.minuto=30;
+    HORARIO_PECA.hora = 21;
+    HORARIO_PECA.minuto = 30;
 
     InicializarSala();
     MenuPrincipal();
 }
 
-struct tm* PegarData() {
+struct tm *PegarData() {
     time_t now;
-    time (&now);
+    time(&now);
 
     return localtime(&now);
 }
 
 void InicializarSala() {
-    for (int i = 0; i < sizeof(POLTRONAS)/sizeof(float); ++i) {
-        POLTRONAS[i]=-1;
+    for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
+        POLTRONAS[i] = -1;
     }
 }
 
 int ConferirEstudante() {
     char opcao;
-    do{
+    do {
         printf("\t\tÉ estudante? (S/N) ");
         scanf("%s", &opcao);
-        switch(opcao) {
+        switch (opcao) {
             case 'S':
             case 's':
                 return 1;
@@ -92,15 +99,15 @@ int ConferirEstudante() {
                 break;
         }
 
-    }while(1);
+    } while (1);
 }
 
 int ConferirProfessor() {
     char opcao;
-    do{
+    do {
         printf("\t\tÉ professor da rede publica? (S/N) ");
         scanf("%s", &opcao);
-        switch(opcao) {
+        switch (opcao) {
             case 'S':
             case 's':
                 return 1;
@@ -111,18 +118,18 @@ int ConferirProfessor() {
                 break;
         }
 
-    }while(1);
+    } while (1);
 }
 
 int ConferirMenorDeIdade(int idade) {
-    if(idade >=2 && idade<=12) {
+    if (idade >= 2 && idade <= 12) {
         return 1;
     }
     return 0;
 }
 
-int ConferirIdoso(int idade){
-    if(idade >=60) {
+int ConferirIdoso(int idade) {
+    if (idade >= 60) {
         return 1;
     }
     return 0;
@@ -132,13 +139,13 @@ int ConferirCriancaCarenteDiaDaSemana() {
     int diaDaSemana = DATA->tm_wday;
 
     char opcao;
-    do{
+    do {
         printf("\t\tÉ estudante rede pública? (S/N) ");
         scanf("%s", &opcao);
-        switch(opcao) {
+        switch (opcao) {
             case 'S':
             case 's':
-                if(diaDaSemana==2) {
+                if (diaDaSemana == 2) {
                     return 1;
                 }
                 return 0;
@@ -148,12 +155,12 @@ int ConferirCriancaCarenteDiaDaSemana() {
             default:
                 break;
         }
-    }while(1);
+    } while (1);
 }
 
 int VerificarSalaCheia() {
-    for (int i = 0; i < sizeof(POLTRONAS)/sizeof(float); ++i) {
-        if(POLTRONAS[i]==-1) {
+    for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
+        if (POLTRONAS[i] == -1) {
             return 0;
         }
     }
@@ -161,7 +168,7 @@ int VerificarSalaCheia() {
 }
 
 void CompreIngresso() {
-    if(VerificarSalaCheia()==1) {
+    if (VerificarSalaCheia() == 1) {
         printf("\t\t[Sala Lotada!]");
 
         MenuPrincipal();
@@ -175,14 +182,14 @@ void CompreIngresso() {
     int cadeiraSelecionada = 0;
     float valor;
 
-    printf("\t\tInforme sua idade:");
+    printf("\t\tInforme sua idade: ");
     scanf("%d", &idade);
 
     ehMenor = ConferirMenorDeIdade(idade);
     ehIdoso = ConferirIdoso(idade);
     ehEstudante = ConferirEstudante();
 
-    if(ehEstudante==1) {
+    if (ehEstudante == 1) {
         ehEstudanteCriancaETercaFeira = ConferirCriancaCarenteDiaDaSemana();
     } else {
         ehProfessor = ConferirProfessor();
@@ -196,14 +203,16 @@ void CompreIngresso() {
 
     system("read -p '\t\tPressione ENTER para continuar...' var");
 
+    clearscr();
+
     MenuPrincipal();
 }
 
-float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor){
+float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor) {
     float valorIngresso = PRECO_BASE;
-    if(ehMenor==1 || ehIdoso==1 || ehEstudante==1 || ehProfessor==1) {
+    if (ehMenor == 1 || ehIdoso == 1 || ehEstudante == 1 || ehProfessor == 1) {
         valorIngresso = valorIngresso / 2;
-    } else if(ehCriancaETercaFeira) {
+    } else if (ehCriancaETercaFeira) {
         valorIngresso = 0;
     }
 
@@ -211,7 +220,7 @@ float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETer
 }
 
 void GravarPoltrona(int cadeiraSelecionada, float valor) {
-    POLTRONAS[cadeiraSelecionada-1] = valor;
+    POLTRONAS[cadeiraSelecionada - 1] = valor;
 }
 
 void GerarTicket(int cadeiraSelecionada, float valor) {
@@ -221,7 +230,7 @@ void GerarTicket(int cadeiraSelecionada, float valor) {
 
 }
 
-int SelecionarPoltrona(){
+int SelecionarPoltrona() {
     int selecao;
     do {
         printf("\n\n");
@@ -229,26 +238,26 @@ int SelecionarPoltrona(){
         printf("\t\t*               P O L T R O N A S               *\n");
         printf("\t\t=================================================\n");
 
-        for (int i=1;i<=50;i++){
-            if(i==1||i==11||i==21||i==31||i==41){
+        for (int i = 1; i <= 50; i++) {
+            if (i == 1 || i == 11 || i == 21 || i == 31 || i == 41) {
                 printf("\n\t\t");
             }
-            if (POLTRONAS[i-1]==-1){
-                printf("[%2.d] ",i);
-            }	else {
+            if (POLTRONAS[i - 1] == -1) {
+                printf("[%2.d] ", i);
+            } else {
                 printf("[--] ");
             }
         }
 
-        printf("\n\t\tSelecione sua Poltrona :");
-        scanf("%d",&selecao);
+        printf("\n\n\t\tSelecione sua Poltrona: ");
+        scanf("%d", &selecao);
         selecao = selecao;
-        if(POLTRONAS[selecao-1]==-1){
+        if (POLTRONAS[selecao - 1] == -1) {
             return selecao;
-        }else {
+        } else {
             printf("\n\t\t[O Lugar já foi reservado!] \n");
         }
-    }while(1);
+    } while (1);
 }
 
 void MenuPrincipal() {
@@ -258,7 +267,8 @@ void MenuPrincipal() {
     printf("\t\t===============================================\n");
     printf("\t\t*      I N G R E S S O * T E A T R O          *\n");
     printf("\t\t===============================================");
-    printf("\n\t\t||         Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year+1900), HORARIO_PECA.hora, HORARIO_PECA.minuto);
+    printf("\n\t\t||         Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+           HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\n\t\t||            M A I N  *  M E N U            ||");
     printf("\n\t\t===============================================");
     printf("\n\t\t||                                           ||");
@@ -268,23 +278,23 @@ void MenuPrincipal() {
     printf("\n\t\t||                                           ||");
     printf("\n\t\t===============================================\n\n\n");
 
-        printf("\n\t\tSelecione opção:");
+    printf("\n\t\tSelecione opção: ");
 
-        scanf("%d", &opcao);
-        switch (opcao) {
-            case 1:
-                CompreIngresso();
-                break;
-            case 2:
-                printf("Fechamento");
-                break;
-            case 3:
-                Sair();
-                break;
-            default:
-                printf("Selecione uma opção válida");
-                MenuPrincipal();
-                break;
-        }
-        opcao = 0;
+    scanf("%d", &opcao);
+    switch (opcao) {
+        case 1:
+            CompreIngresso();
+            break;
+        case 2:
+            printf("Fechamento");
+            break;
+        case 3:
+            Sair();
+            break;
+        default:
+            printf("Selecione uma opção válida");
+            MenuPrincipal();
+            break;
+    }
+    opcao = 0;
 }
