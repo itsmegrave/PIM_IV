@@ -227,15 +227,16 @@ int SelecionarPoltrona(){
                 printf("\n");
             }
             if (POLTRONAS[i]==-1){
+                printf("[%2.d] ",i);
+            }	else {
                 printf("[X] ");
-            }	else {printf("[%2.d] ",i);
             }
         }
 
         printf(" \n Selecione sua Poltrona :");
         scanf("%d",&selecao);
         selecao = selecao;
-        if(POLTRONAS[selecao-1]!=-1){
+        if(POLTRONAS[selecao-1]==-1){
             return selecao;
         }else {
             printf("\n [O Lugar já foi reservado!] \n");
