@@ -1,22 +1,22 @@
 //
 // Created by grave on 23/10/18.
-//Este PIM é composto de duas partes: uma teórica e outra prática.
-//Para a parte prática, cada aluno ou grupo de PIM deverá desenvolver, em linguagem C,
+//Este PIM é composto de duas partes: uma teórica e outra pr?tica.
+//Para a parte pr?tica, cada aluno ou grupo de PIM dever? desenvolver, em linguagem C,
 //um sistema para venda de ingressos de teatro.
-//O sistema de venda de ingressos de teatro deverá levar em consideração uma tabela de
-//valores para os ingressos, a qual deverá contemplar meia-entrada (50% de desconto) para
-//estudantes,  crianças  de  02  a  12  anos,  adultos  a  partir  de  60  anos  e  professores  da  rede
-//pública de ensino.
-//A  tabela  também  deverá  contemplar  ingresso  com  100%  de  desconto  para  crianças
-//carentes da rede pública de ensino às terças-feiras.
-//Ao concretizar a compra do ingresso, o sistema deverá emitir (mostrar na tela) um ticket
-//com a data, a hora, o nome da peça teatral e o número da poltrona. Nenhum espectador
-//pode ter um ingresso com o mesmo número da poltrona de outro espectador da mesma
-//        peça teatral de um determinado horário.
-//O   sistema   deverá   informar   quando   não   existir   mais   lugares   disponíveis   e,
-//consequentemente,  não  permitir  mais  a  venda  de  ingressos  para  a  peça  em  questão.
-//Deverá também fazer a gestão do caixa, isto é, informar no fechamento do caixa todas as
-//        movimentações do dia e o saldo do fechamento.
+//O sistema de venda de ingressos de teatro dever? levar em considera??o uma tabela de
+//valores para os ingressos, a qual dever? contemplar meia-entrada (50% de desconto) para
+//estudantes,  crian?as  de  02  a  12  anos,  adultos  a  partir  de  60  anos  e  professores  da  rede
+//p?blica de ensino.
+//A  tabela  tamb?m  dever?  contemplar  ingresso  com  100%  de  desconto  para  crian?as
+//carentes da rede p?blica de ensino ?s ter?as-feiras.
+//Ao concretizar a compra do ingresso, o sistema dever? emitir (mostrar na tela) um ticket
+//com a data, a hora, o nome da pe?a teatral e o n?mero da poltrona. Nenhum espectador
+//pode ter um ingresso com o mesmo n?mero da poltrona de outro espectador da mesma
+//        pe?a teatral de um determinado hor?rio.
+//O   sistema   dever?   informar   quando   n?o   existir   mais   lugares   dispon?veis   e,
+//consequentemente,  n?o  permitir  mais  a  venda  de  ingressos  para  a  pe?a  em  quest?o.
+//Dever? tamb?m fazer a gest?o do caixa, isto ?, informar no fechamento do caixa todas as
+//        movimenta??es do dia e o saldo do fechamento.
 //
 
 #include <stdio.h>
@@ -142,7 +142,7 @@ int ConferirCriancaCarenteDiaDaSemana() {
 
     char opcao;
     do {
-        printf("\t\tÉ estudante rede pública? (S/N) ");
+        printf("\t\tÉ estudante rede p?blica? (S/N) ");
         scanf("%s", &opcao);
         switch (opcao) {
             case 'S':
@@ -161,7 +161,6 @@ int ConferirCriancaCarenteDiaDaSemana() {
 }
 
 int VerificarSalaCheia() {
-    for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
     for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
         if (POLTRONAS[i] == -1) {
             return 0;
