@@ -24,6 +24,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include "clearscr.h"
+#include "pausecmd.h"
 
 struct horario_peca {
     int hora;
@@ -201,8 +202,7 @@ void CompreIngresso() {
     GravarPoltrona(cadeiraSelecionada, valor);
     GerarTicket(cadeiraSelecionada, valor);
 
-    system("read -p '\t\tPressione ENTER para continuar...' var");
-
+    pausecmd();
     clearscr();
 
     MenuPrincipal();
