@@ -1,22 +1,22 @@
 //
 // Created by grave on 23/10/18.
-//Este PIM √© composto de duas partes: uma te√≥rica e outra pr√°tica.
-//Para a parte pr√°tica, cada aluno ou grupo de PIM dever√° desenvolver, em linguagem C,
+//Este PIM È composto de duas partes: uma teÛrica e outra pr·tica.
+//Para a parte pr·tica, cada aluno ou grupo de PIM dever· desenvolver, em linguagem C,
 //um sistema para venda de ingressos de teatro.
-//O sistema de venda de ingressos de teatro dever√° levar em considera√ß√£o uma tabela de
-//valores para os ingressos, a qual dever√° contemplar meia-entrada (50% de desconto) para
-//estudantes,  crian√ßas  de  02  a  12  anos,  adultos  a  partir  de  60  anos  e  professores  da  rede
-//p√∫blica de ensino.
-//A  tabela  tamb√©m  dever√°  contemplar  ingresso  com  100%  de  desconto  para  crian√ßas
-//carentes da rede p√∫blica de ensino √†s ter√ßas-feiras.
-//Ao concretizar a compra do ingresso, o sistema dever√° emitir (mostrar na tela) um ticket
-//com a data, a hora, o nome da pe√ßa teatral e o n√∫mero da poltrona. Nenhum espectador
-//pode ter um ingresso com o mesmo n√∫mero da poltrona de outro espectador da mesma
-//        pe√ßa teatral de um determinado hor√°rio.
-//O   sistema   dever√°   informar   quando   n√£o   existir   mais   lugares   dispon√≠veis   e,
-//consequentemente,  n√£o  permitir  mais  a  venda  de  ingressos  para  a  pe√ßa  em  quest√£o.
-//Dever√° tamb√©m fazer a gest√£o do caixa, isto √©, informar no fechamento do caixa todas as
-//        movimenta√ß√µes do dia e o saldo do fechamento.
+//O sistema de venda de ingressos de teatro dever· levar em consideraÁ„o uma tabela de
+//valores para os ingressos, a qual dever· contemplar meia-entrada (50% de desconto) para
+//estudantes,  crianÁas  de  02  a  12  anos,  adultos  a  partir  de  60  anos  e  professores  da  rede
+//p˙blica de ensino.
+//A  tabela  tambÈm  dever·  contemplar  ingresso  com  100%  de  desconto  para  crianÁas
+//carentes da rede p˙blica de ensino ‡s terÁas-feiras.
+//Ao concretizar a compra do ingresso, o sistema dever· emitir (mostrar na tela) um ticket
+//com a data, a hora, o nome da peÁa teatral e o n˙mero da poltrona. Nenhum espectador
+//pode ter um ingresso com o mesmo n˙mero da poltrona de outro espectador da mesma
+//        peÁa teatral de um determinado hor·rio.
+//O   sistema   dever·   informar   quando   n„o   existir   mais   lugares   disponÌveis   e,
+//consequentemente,  n„o  permitir  mais  a  venda  de  ingressos  para  a  peÁa  em  quest„o.
+//Dever· tambÈm fazer a gest„o do caixa, isto È, informar no fechamento do caixa todas as
+//        movimentaÁıes do dia e o saldo do fechamento.
 //
 
 #include <stdio.h>
@@ -24,6 +24,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include "clearscr.h"
+#include "pausecmd.h"
 
 
 struct horario_peca {
@@ -87,7 +88,7 @@ void InicializarSala() {
 int ConferirEstudante() {
     char opcao;
     do {
-        printf("\t\t√â estudante? (S/N) ");
+        printf("\t\t… estudante? (S/N) ");
         scanf("%s", &opcao);
         switch (opcao) {
             case 'S':
@@ -141,7 +142,7 @@ int ConferirCriancaCarenteDiaDaSemana() {
 
     char opcao;
     do {
-        printf("\t\t√â estudante rede p√∫blica? (S/N) ");
+        printf("\t\t… estudante rede p˙blica? (S/N) ");
         scanf("%s", &opcao);
         switch (opcao) {
             case 'S':
@@ -160,6 +161,7 @@ int ConferirCriancaCarenteDiaDaSemana() {
 }
 
 int VerificarSalaCheia() {
+    for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
     for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
         if (POLTRONAS[i] == -1) {
             return 0;
@@ -202,7 +204,7 @@ void CompreIngresso() {
     GravarPoltrona(cadeiraSelecionada, valor);
     GerarTicket(cadeiraSelecionada, valor);
 
-    system("read -p '\t\tPressione ENTER para continuar...' var");
+    pausecmd();
 
     clearscr();
 
@@ -256,7 +258,7 @@ int SelecionarPoltrona() {
         if (POLTRONAS[selecao - 1] == -1) {
             return selecao;
         } else {
-            printf("\n\t\t[O Lugar j√° foi reservado!] \n");
+            printf("\n\t\t[O Lugar j· foi reservado!] \n");
         }
     } while (1);
 }
@@ -268,7 +270,7 @@ void MenuPrincipal() {
     printf("\t\t===============================================\n");
     printf("\t\t*      I N G R E S S O * T E A T R O          *\n");
     printf("\t\t===============================================");
-    printf("\n\t\t||         Data da pe√ßa: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+    printf("\n\t\t||         Data da peÁa: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
            HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\n\t\t||            M A I N  *  M E N U            ||");
     printf("\n\t\t===============================================");
@@ -279,7 +281,7 @@ void MenuPrincipal() {
     printf("\n\t\t||                                           ||");
     printf("\n\t\t===============================================\n\n\n");
 
-    printf("\n\t\tSelecione op√ß√£o: ");
+    printf("\n\t\tSelecione opÁ„o: ");
 
     scanf("%d", &opcao);
     switch (opcao) {
@@ -293,7 +295,7 @@ void MenuPrincipal() {
             Sair();
             break;
         default:
-            printf("Selecione uma op√ß√£o v√°lida");
+            printf("Selecione uma opÁ„o v·lida");
             MenuPrincipal();
             break;
     }
