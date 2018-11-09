@@ -142,7 +142,7 @@ int ConferirCriancaCarenteDiaDaSemana() {
 
     char opcao;
     do {
-        printf("\t\tÉ estudante rede p?blica? (S/N) ");
+        printf("\t\tÉ estudante rede pública? (S/N) ");
         scanf("%s", &opcao);
         switch (opcao) {
             case 'S':

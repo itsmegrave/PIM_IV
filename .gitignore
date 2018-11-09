@@ -55,3 +55,5 @@ dkms.conf
 # IDE files
 *.idea
 *.vs
+
+Makefile.win
