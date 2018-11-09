@@ -24,7 +24,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include "clearscr.h"
-#include "pausecmd.h"
+
 
 struct horario_peca {
     int hora;
@@ -106,7 +106,7 @@ int ConferirEstudante() {
 int ConferirProfessor() {
     char opcao;
     do {
-        printf("\t\t√â professor da rede publica? (S/N) ");
+        printf("\t\t… professor da rede publica? (S/N) ");
         scanf("%s", &opcao);
         switch (opcao) {
             case 'S':
@@ -202,7 +202,8 @@ void CompreIngresso() {
     GravarPoltrona(cadeiraSelecionada, valor);
     GerarTicket(cadeiraSelecionada, valor);
 
-    pausecmd();
+    system("read -p '\t\tPressione ENTER para continuar...' var");
+
     clearscr();
 
     MenuPrincipal();
