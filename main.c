@@ -45,9 +45,9 @@ int VerificarSalaCheia();
 
 float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor);
 
-void GravarPoltrona(int cadeiraSelecionada, float valor);
+void GravarPoltrona(int poltronaSelecionada, float valor);
 
-void GerarTicket(int cadeiraSelecionada, float valor);
+void GerarTicket(int poltronaSelecionada, float valor);
 
 struct tm *PegarData();
 
@@ -139,25 +139,25 @@ int ConferirIdoso(int idade) {
 
 int ConferirCriancaCarenteDiaDaSemana() {
     int diaDaSemana = DATA->tm_wday;
-
-    char opcao;
-    do {
-        printf("\t\tÉ estudante rede pública? (S/N) ");
-        scanf("%s", &opcao);
-        switch (opcao) {
-            case 'S':
-            case 's':
-                if (diaDaSemana == 2) {
-                    return 1;
-                }
-                return 0;
-            case 'N':
-            case 'n':
-                return 0;
-            default:
-                break;
-        }
-    } while (1);
+    if(diaDaSemana == 2) {
+        char opcao;
+        do {
+            printf("\t\tÉ estudante rede pública? (S/N) ");
+            scanf("%s", &opcao);
+            switch (opcao) {
+                case 'S':
+                case 's':
+                        return 1;
+                case 'N':
+                case 'n':
+                    return 0;
+                default:
+                    break;
+            }
+        } while (1);
+    } else {
+        return 0;
+    }
 }
 
 int VerificarSalaCheia() {
@@ -212,22 +212,28 @@ void CompreIngresso() {
 
 float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor) {
     float valorIngresso = PRECO_BASE;
-    if (ehMenor == 1 || ehIdoso == 1 || ehEstudante == 1 || ehProfessor == 1) {
-        valorIngresso = valorIngresso / 2;
-    } else if (ehCriancaETercaFeira) {
+    if (ehCriancaETercaFeira) {
         valorIngresso = 0;
+    } else if (ehMenor == 1 || ehIdoso == 1 || ehEstudante == 1 || ehProfessor == 1) {
+        valorIngresso = valorIngresso / 2;
     }
 
     return valorIngresso;
 }
 
-void GravarPoltrona(int cadeiraSelecionada, float valor) {
-    POLTRONAS[cadeiraSelecionada - 1] = valor;
+void GravarPoltrona(int poltronaSelecionada, float valor) {
+    POLTRONAS[poltronaSelecionada - 1] = valor;
 }
 
-void GerarTicket(int cadeiraSelecionada, float valor) {
+void GerarTicket(int poltronaSelecionada, float valor) {
     printf("\t\t====================================\n");
     printf("\t\t*            T I C K E T           *\n");
+    printf("\t\t====================================\n");
+    printf("\t\t    O Fantástico Mundo de OoO    \n");
+    printf("\t\t                                 \n");
+    printf("\t\t Data da peça: %d/%d/%d %d:%d  \n", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+           HORARIO_PECA.hora, HORARIO_PECA.minuto);
+    printf("\t\t           Poltrona: %d           \n", poltronaSelecionada);
     printf("\t\t====================================\n");
 
 }
@@ -262,6 +268,37 @@ int SelecionarPoltrona() {
     } while (1);
 }
 
+int ImprimirFechamento() {
+    int inteiras = 0;
+    int meias = 0;
+    int gratuidades = 0;
+
+    for (int i = 0; i < sizeof(POLTRONAS) / sizeof(float); ++i) {
+        if(POLTRONAS[i]==PRECO_BASE) {
+            inteiras++;
+        } else if(POLTRONAS[i]==(PRECO_BASE/2)) {
+            meias++;
+        } else if(POLTRONAS[i]==0) {
+            gratuidades++;
+        }
+    }
+
+    printf("\t\t===============================================\n");
+    printf("\t\t*             F E C H A M E N T O             *\n");
+    printf("\t\t===============================================\n");
+    printf("\t\t %d tickets inteira:     | R$ %.2f\n", inteiras, (inteiras*PRECO_BASE));
+    printf("\t\t %d tickets meia:        | R$ %.2f\n", meias, (meias*(PRECO_BASE/2)));
+    printf("\t\t %d tickets gratuidade:  | R$ %.2f\n", gratuidades, 0.00);
+    printf("\t\t===============================================\n");
+    printf("\t\t Total:                  | R$ %.2f\n", (inteiras*PRECO_BASE) + (meias * PRECO_BASE/2));
+    printf("\t\t===============================================\n");
+
+    pausecmd();
+
+    clearscr();
+
+    MenuPrincipal();
+}
 void MenuPrincipal() {
     int opcao = 0;
 
@@ -269,7 +306,7 @@ void MenuPrincipal() {
     printf("\t\t===============================================\n");
     printf("\t\t*      I N G R E S S O * T E A T R O          *\n");
     printf("\t\t===============================================");
-    printf("\n\t\t||         Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+    printf("\n\t\t||        Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
            HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\n\t\t||            M A I N  *  M E N U            ||");
     printf("\n\t\t===============================================");
@@ -288,7 +325,7 @@ void MenuPrincipal() {
             CompreIngresso();
             break;
         case 2:
-            printf("Fechamento");
+            ImprimirFechamento();
             break;
         case 3:
             Sair();
