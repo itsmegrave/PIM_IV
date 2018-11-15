@@ -70,8 +70,9 @@ void InicializarSala() {
 int ConferirEstudante() {
     char opcao;
     do {
+    	getchar();
         printf("\t\t… estudante? (S/N) ");
-        scanf("%s", &opcao);
+        opcao = getchar();
         switch (opcao) {
             case 'S':
             case 's':
@@ -89,8 +90,9 @@ int ConferirEstudante() {
 int ConferirProfessor() {
     char opcao;
     do {
+    	getchar();
         printf("\t\t… professor da rede publica? (S/N) ");
-        scanf("%s", &opcao);
+        opcao=getchar();
         switch (opcao) {
             case 'S':
             case 's':
@@ -124,8 +126,9 @@ int ConferirEstudanteCarenteDiaDaSemana() {
     if(diaDaSemana == 2) {
         char opcao;
         do {
+        	getchar();
             printf("\t\t… estudante rede p˙blica? (S/N) ");
-            scanf("%s", &opcao);
+            opcao=getchar();
             switch (opcao) {
                 case 'S':
                 case 's':
