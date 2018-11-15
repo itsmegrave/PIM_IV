@@ -1,23 +1,5 @@
 //
 // Created by grave on 23/10/18.
-//Este PIM é composto de duas partes: uma teórica e outra pr?tica.
-//Para a parte pr?tica, cada aluno ou grupo de PIM dever? desenvolver, em linguagem C,
-//um sistema para venda de ingressos de teatro.
-//O sistema de venda de ingressos de teatro dever? levar em considera??o uma tabela de
-//valores para os ingressos, a qual dever? contemplar meia-entrada (50% de desconto) para
-//estudantes,  crian?as  de  02  a  12  anos,  adultos  a  partir  de  60  anos  e  professores  da  rede
-//p?blica de ensino.
-//A  tabela  tamb?m  dever?  contemplar  ingresso  com  100%  de  desconto  para  crian?as
-//carentes da rede p?blica de ensino ?s ter?as-feiras.
-//Ao concretizar a compra do ingresso, o sistema dever? emitir (mostrar na tela) um ticket
-//com a data, a hora, o nome da pe?a teatral e o n?mero da poltrona. Nenhum espectador
-//pode ter um ingresso com o mesmo n?mero da poltrona de outro espectador da mesma
-//        pe?a teatral de um determinado hor?rio.
-//O   sistema   dever?   informar   quando   n?o   existir   mais   lugares   dispon?veis   e,
-//consequentemente,  n?o  permitir  mais  a  venda  de  ingressos  para  a  pe?a  em  quest?o.
-//Dever? tamb?m fazer a gest?o do caixa, isto ?, informar no fechamento do caixa todas as
-//        movimenta??es do dia e o saldo do fechamento.
-//
 
 #include <stdio.h>
 #include <time.h>
@@ -137,7 +119,7 @@ int ConferirIdoso(int idade) {
     return 0;
 }
 
-int ConferirCriancaCarenteDiaDaSemana() {
+int ConferirEstudanteCarenteDiaDaSemana() {
     int diaDaSemana = DATA->tm_wday;
     if(diaDaSemana == 2) {
         char opcao;
@@ -192,7 +174,7 @@ void CompreIngresso() {
     ehEstudante = ConferirEstudante();
 
     if (ehEstudante == 1) {
-        ehEstudanteCriancaETercaFeira = ConferirCriancaCarenteDiaDaSemana();
+        ehEstudanteCriancaETercaFeira = ConferirEstudanteCarenteDiaDaSemana();
     } else {
         ehProfessor = ConferirProfessor();
     }
@@ -212,7 +194,7 @@ void CompreIngresso() {
 
 float CalcularValor(int ehMenor, int ehIdoso, int ehEstudante, int ehCriancaETercaFeira, int ehProfessor) {
     float valorIngresso = PRECO_BASE;
-    if (ehCriancaETercaFeira) {
+    if (ehCriancaETercaFeira == 1) {
         valorIngresso = 0;
     } else if (ehMenor == 1 || ehIdoso == 1 || ehEstudante == 1 || ehProfessor == 1) {
         valorIngresso = valorIngresso / 2;
@@ -259,7 +241,7 @@ int SelecionarPoltrona() {
 
         printf("\n\n\t\tSelecione sua Poltrona: ");
         scanf("%d", &selecao);
-        selecao = selecao;
+
         if (POLTRONAS[selecao - 1] == -1) {
             return selecao;
         } else {
@@ -299,6 +281,7 @@ int ImprimirFechamento() {
 
     MenuPrincipal();
 }
+
 void MenuPrincipal() {
     int opcao = 0;
 
