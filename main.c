@@ -216,7 +216,7 @@ void GerarTicket(int poltronaSelecionada, float valor) {
     printf("\t\t====================================\n");
     printf("\t\t    O Fantástico Mundo de OoO    \n");
     printf("\t\t                                 \n");
-    printf("\t\t Data da peça: %d/%d/%d %d:%d  \n", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+    printf("\t\t Data da peça: %d/%d/%d %d:%d  \n", DATA->tm_mday, (DATA->tm_mon + 1 ), (DATA->tm_year + 1900),
            HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\t\t           Poltrona: %d           \n", poltronaSelecionada);
     printf("\t\t====================================\n");
@@ -290,9 +290,9 @@ void MenuPrincipal() {
 
     printf("\n\n\n\n");
     printf("\t\t===============================================\n");
-    printf("\t\t*      I N G R E S S O * T E A T R O          *\n");
+    printf("\t\t*      I N G R E S S O * T E A T R O          *\n");]
     printf("\t\t===============================================");
-    printf("\n\t\t||        Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, DATA->tm_mon, (DATA->tm_year + 1900),
+    printf("\n\t\t||        Data da peça: %d/%d/%d %d:%d     ||", DATA->tm_mday, (DATA->tm_mon + 1), (DATA->tm_year + 1900),
            HORARIO_PECA.hora, HORARIO_PECA.minuto);
     printf("\n\t\t||            M A I N  *  M E N U            ||");
     printf("\n\t\t===============================================");
